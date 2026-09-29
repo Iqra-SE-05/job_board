@@ -3,11 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Job Board</title>
+  <title>JobBoard - Find Your Dream Job</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Job Board</h1>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo">Job<span>Board</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="#jobs">Jobs</a>
+        <a href="#">Post a Job</a>
+        <a href="#" class="btn btn-outline">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1>Find Your Dream Job Today</h1>
+      <p>Thousands of jobs from top companies. Search, apply, and get hired.</p>
+      <div class="search-box">
+        <input type="text" placeholder="Job title or keyword">
+        <input type="text" placeholder="City">
+        <button class="btn btn-primary">Search</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Jobs Section (next step mein bharenge) -->
+  <section id="jobs" class="container jobs-section">
+    <h2>Latest Jobs</h2>
+    <p class="muted">Jobs yahan Step 3 mein show hongi.</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 JobBoard. All rights reserved.</p>
+    </div>
+  </footer>
+
   <script src="script.js"></script>
 </body>
 </html>
