@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post a Job - JobBoard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo">Job<span>Board</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#jobs">Jobs</a>
+        <a href="post-job.html">Post a Job</a>
+        <a href="#" class="btn btn-outline">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container detail-page">
+    <div class="detail-card">
+      <h1>Post a Job</h1>
+      <p class="muted">Fill in the details and your job will appear on the home page.</p>
+
+      <form id="post-form">
+        <label for="title">Job Title</label>
+        <input type="text" id="title" placeholder="e.g. React Developer" required>
+
+        <label for="company">Company Name</label>
+        <input type="text" id="company" placeholder="e.g. TechNova" required>
+
+        <label for="location">City</label>
+        <input type="text" id="location" placeholder="e.g. Lahore or Remote" required>
+
+        <label for="type">Job Type</label>
+        <select id="type" required>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Internship">Internship</option>
+          <option value="Contract">Contract</option>
+        </select>
+
+        <label for="category">Category</label>
+        <select id="category" required>
+          <option value="IT">IT</option>
+          <option value="Design">Design</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Finance">Finance</option>
+          <option value="Sales">Sales</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="salary">Salary</label>
+        <input type="text" id="salary" placeholder="e.g. PKR 80,000 - 120,000" required>
+
+        <label for="description">Job Description</label>
+        <textarea id="description" rows="4" placeholder="What will the person do?" required></textarea>
+
+        <label for="requirements">Requirements (one per line)</label>
+        <textarea id="requirements" rows="4" placeholder="1+ year experience&#10;Good communication skills" required></textarea>
+
+        <button type="submit" class="btn btn-primary">Post Job</button>
+      </form>
+
+      <p id="post-success" class="success-msg" style="display:none;"></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 JobBoard. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="post-job.js"></script>
+</body>
+</html>
