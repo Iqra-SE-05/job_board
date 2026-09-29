@@ -65,7 +65,7 @@ function showJobs(jobsToShow) {
       "</div>" +
       "<p class='job-desc'>" + job.description + "</p>" +
       "<p class='job-desc'><strong>" + job.salary + "</strong></p>" +
-      "<a href='#' class='btn btn-primary'>View Details</a>";
+            "<a href='job.html?id=" + job.id + "' class='btn btn-primary'>View Details</a>";
     list.appendChild(card);
   });
 }
