@@ -1,5 +1,4 @@
-// Jobs ka data (do pages mein use hoga)
-const jobs = [
+export const sampleJobs = [
   {
     id: 1,
     title: "Frontend Developer",
@@ -45,13 +44,3 @@ const jobs = [
     requirements: ["Basic knowledge of any backend language", "Eagerness to learn", "Available for 3 months"]
   }
 ];
-
-// Company ki post ki hui jobs bhi add karo
-try {
-  const postedJobs = JSON.parse(localStorage.getItem("postedJobs") || "[]");
-  postedJobs.forEach(function (j) {
-    jobs.push(j);
-  });
-} catch (err) {
-  console.log("Could not load posted jobs");
-}
