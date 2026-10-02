@@ -1,11 +1,28 @@
-import { addJob } from "./firebase-config.js";
+import { addJob, onUser } from "./firebase-config.js";
+
+let currentUser = null;
 
 function clean(text) {
   return text.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 }
 
+// Login nahi hai to login page par bhej do
+onUser(function (user) {
+  if (!user) {
+    window.location.href = "login.html";
+    return;
+  }
+  currentUser = user;
+  const companyInput = document.getElementById("company");
+  if (!companyInput.value && user.displayName) {
+    companyInput.value = user.displayName;
+  }
+});
+
 document.getElementById("post-form").addEventListener("submit", async function (e) {
   e.preventDefault();
+  if (!currentUser) return;
+
   const btn = e.target.querySelector("button");
   btn.disabled = true;
   btn.textContent = "Posting...";
@@ -24,7 +41,9 @@ document.getElementById("post-form").addEventListener("submit", async function (
     category: document.getElementById("category").value,
     salary: clean(document.getElementById("salary").value),
     description: clean(document.getElementById("description").value),
-    requirements: requirements
+    requirements: requirements,
+    ownerId: currentUser.uid,
+    ownerEmail: currentUser.email
   };
 
   try {
