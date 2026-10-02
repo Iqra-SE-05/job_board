@@ -1,4 +1,7 @@
-// Jobs ko page par dikhane wala function
+import { getAllJobs } from "./firebase-config.js";
+
+let jobs = [];
+
 function showJobs(jobsToShow) {
   const list = document.getElementById("jobs-list");
   list.innerHTML = "";
@@ -26,7 +29,6 @@ function showJobs(jobsToShow) {
   });
 }
 
-// Search aur filter
 function searchJobs() {
   const keyword = document.getElementById("search-input").value.toLowerCase().trim();
   const city = document.getElementById("city-input").value.toLowerCase().trim();
@@ -39,17 +41,13 @@ function searchJobs() {
       job.description.toLowerCase().includes(keyword);
 
     const matchesCity = job.location.toLowerCase().includes(city);
-
     return matchesKeyword && matchesCity;
   });
 
   showJobs(filtered);
 }
 
-// Search button click par
 document.getElementById("search-btn").addEventListener("click", searchJobs);
-
-// Enter dabane par bhi search ho
 document.getElementById("search-input").addEventListener("keyup", function (e) {
   if (e.key === "Enter") searchJobs();
 });
@@ -57,5 +55,11 @@ document.getElementById("city-input").addEventListener("keyup", function (e) {
   if (e.key === "Enter") searchJobs();
 });
 
-// Page khulte hi saari jobs dikhao
-showJobs(jobs);
+// Page khulte hi Firebase se jobs lao
+async function init() {
+  document.getElementById("jobs-list").innerHTML = "<p class='muted'>Loading jobs...</p>";
+  jobs = await getAllJobs();
+  showJobs(jobs);
+}
+
+init();
