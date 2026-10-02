@@ -1,10 +1,14 @@
-// Special characters ko safe banata hai
+import { addJob } from "./firebase-config.js";
+
 function clean(text) {
   return text.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
 }
 
-document.getElementById("post-form").addEventListener("submit", function (e) {
+document.getElementById("post-form").addEventListener("submit", async function (e) {
   e.preventDefault();
+  const btn = e.target.querySelector("button");
+  btn.disabled = true;
+  btn.textContent = "Posting...";
 
   const requirements = document
     .getElementById("requirements")
@@ -13,7 +17,6 @@ document.getElementById("post-form").addEventListener("submit", function (e) {
     .filter(function (line) { return line !== ""; });
 
   const newJob = {
-    id: Date.now(),
     title: clean(document.getElementById("title").value),
     company: clean(document.getElementById("company").value),
     location: clean(document.getElementById("location").value),
@@ -24,13 +27,16 @@ document.getElementById("post-form").addEventListener("submit", function (e) {
     requirements: requirements
   };
 
-  // Abhi browser mein save hoga (Step 7 mein real database lagayenge)
-  const saved = JSON.parse(localStorage.getItem("postedJobs") || "[]");
-  saved.push(newJob);
-  localStorage.setItem("postedJobs", JSON.stringify(saved));
-
-  document.getElementById("post-form").style.display = "none";
-  const msg = document.getElementById("post-success");
-  msg.style.display = "block";
-  msg.innerHTML = "Your job <strong>" + newJob.title + "</strong> has been posted! <a href='index.html#jobs'>View it on the home page</a>";
+  try {
+    await addJob(newJob);
+    document.getElementById("post-form").style.display = "none";
+    const msg = document.getElementById("post-success");
+    msg.style.display = "block";
+    msg.innerHTML = "Your job <strong>" + newJob.title + "</strong> has been posted! <a href='index.html#jobs'>View it on the home page</a>";
+  } catch (err) {
+    console.error(err);
+    alert("Something went wrong. Please try again.");
+    btn.disabled = false;
+    btn.textContent = "Post Job";
+  }
 });
