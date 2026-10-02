@@ -39,9 +39,11 @@
         <label for="phone">Phone Number</label>
         <input type="tel" id="phone" placeholder="03xx xxxxxxx" required>
 
-        <label for="resume">Resume Link (Google Drive / LinkedIn)</label>
-        <input type="url" id="resume" placeholder="https://..." required>
+                <label for="resumeFile">Upload Resume (PDF, DOC or DOCX, max 700 KB)</label>
+        <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
 
+        <label for="resume">Or paste Resume Link (Google Drive / LinkedIn)</label>
+        <input type="url" id="resume" placeholder="https://...">
         <label for="message">Cover Letter (optional)</label>
         <textarea id="message" rows="4" placeholder="Why are you a good fit?"></textarea>
 
