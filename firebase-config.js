@@ -1,5 +1,13 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
 import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 import { sampleJobs } from "./jobs-data.js";
 
 const firebaseConfig = {
@@ -13,8 +21,9 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app);
 
-// Saari jobs lao (company ki posted + sample jobs)
+// ---------- Jobs ----------
 export async function getAllJobs() {
   let posted = [];
   try {
@@ -29,16 +38,34 @@ export async function getAllJobs() {
   return posted.concat(sampleJobs);
 }
 
-// Nayi job save karo
 export async function addJob(job) {
   job.createdAt = Date.now();
   const ref = await addDoc(collection(db, "jobs"), job);
   return ref.id;
 }
 
-// Application save karo
 export async function addApplication(application) {
   application.createdAt = Date.now();
   const ref = await addDoc(collection(db, "applications"), application);
   return ref.id;
+}
+
+// ---------- Login / Signup ----------
+export async function signup(companyName, email, password) {
+  const cred = await createUserWithEmailAndPassword(auth, email, password);
+  await updateProfile(cred.user, { displayName: companyName });
+  return cred.user;
+}
+
+export async function login(email, password) {
+  const cred = await signInWithEmailAndPassword(auth, email, password);
+  return cred.user;
+}
+
+export function logout() {
+  return signOut(auth);
+}
+
+export function onUser(callback) {
+  return onAuthStateChanged(auth, callback);
 }
