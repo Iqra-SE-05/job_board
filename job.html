@@ -8,20 +8,18 @@
 </head>
 <body>
 
-  <!-- Navbar -->
   <header class="navbar">
     <div class="container nav-content">
       <a href="index.html" class="logo">Job<span>Board</span></a>
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="index.html#jobs">Jobs</a>
-       <a href="post-job.html">Post a Job</a>
-        <a href="#" class="btn btn-outline">Login</a>
+        <a href="post-job.html">Post a Job</a>
+        <a href="login.html" class="btn btn-outline">Login</a>
       </nav>
     </div>
   </header>
 
-  <!-- Job Detail -->
   <main class="container detail-page">
     <a href="index.html" class="back-link">&larr; Back to all jobs</a>
 
@@ -39,11 +37,12 @@
         <label for="phone">Phone Number</label>
         <input type="tel" id="phone" placeholder="03xx xxxxxxx" required>
 
-                <label for="resumeFile">Upload Resume (PDF, DOC or DOCX, max 700 KB)</label>
+        <label for="resumeFile">Upload Resume (PDF, DOC or DOCX, max 700 KB)</label>
         <input type="file" id="resumeFile" accept=".pdf,.doc,.docx">
 
         <label for="resume">Or paste Resume Link (Google Drive / LinkedIn)</label>
         <input type="url" id="resume" placeholder="https://...">
+
         <label for="message">Cover Letter (optional)</label>
         <textarea id="message" rows="4" placeholder="Why are you a good fit?"></textarea>
 
@@ -53,13 +52,13 @@
     </div>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <p>&copy; 2026 JobBoard. All rights reserved.</p>
     </div>
   </footer>
 
-   <script type="module" src="job.js"></script>
+  <script type="module" src="nav.js"></script>
+  <script type="module" src="job.js"></script>
 </body>
 </html>
