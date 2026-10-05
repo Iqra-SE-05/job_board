@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - JobBoard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo">Job<span>Board</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="index.html#jobs">Jobs</a>
+        <a href="post-job.html">Post a Job</a>
+        <a href="login.html" class="btn btn-outline">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container dash-page">
+    <h1 id="dash-title">Dashboard</h1>
+    <p class="muted" id="dash-sub">Loading...</p>
+    <div id="dash-jobs"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 JobBoard. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module" src="nav.js"></script>
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
