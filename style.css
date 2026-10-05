@@ -387,3 +387,74 @@ body {
   font-weight: 600;
   text-decoration: none;
 }
+/* Dashboard */
+.dash-page {
+  padding: 40px 20px;
+  max-width: 900px;
+}
+
+.dash-page h1 {
+  margin-bottom: 4px;
+}
+
+.dash-page .muted {
+  margin-bottom: 24px;
+}
+
+.dash-job-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dash-job-head h2 {
+  margin-bottom: 2px;
+}
+
+.count-badge {
+  background: #eff6ff;
+  color: #1e40af;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.applicant {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.applicant h4 {
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.applicant p {
+  margin-bottom: 2px;
+  word-break: break-word;
+}
+
+.applicant-msg {
+  background: #f9fafb;
+  padding: 10px;
+  border-radius: 8px;
+  margin: 8px 0;
+  color: #4b5563;
+}
+
+.applicant-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.small-btn {
+  font-size: 14px;
+  padding: 8px 14px;
+}
