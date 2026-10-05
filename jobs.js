@@ -84,7 +84,9 @@ async function init() {
       const application = {
         jobId: String(job.id),
         jobTitle: job.title,
-        company: job.company,
+        company: job.company,    
+        ownerId: job.ownerId || "",
+        
         name: document.getElementById("name").value,
         email: document.getElementById("email").value,
         phone: document.getElementById("phone").value,
