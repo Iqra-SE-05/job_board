@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, where } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -48,6 +48,23 @@ export async function addApplication(application) {
   application.createdAt = Date.now();
   const ref = await addDoc(collection(db, "applications"), application);
   return ref.id;
+}
+
+// ---------- Dashboard ----------
+export async function getMyJobs(uid) {
+  const q = query(collection(db, "jobs"), where("ownerId", "==", uid));
+  const snap = await getDocs(q);
+  return snap.docs
+    .map(function (d) { return Object.assign({}, d.data(), { id: d.id }); })
+    .sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
+}
+
+export async function getMyApplications(uid) {
+  const q = query(collection(db, "applications"), where("ownerId", "==", uid));
+  const snap = await getDocs(q);
+  return snap.docs
+    .map(function (d) { return Object.assign({}, d.data(), { id: d.id }); })
+    .sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
 }
 
 // ---------- Login / Signup ----------
