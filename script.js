@@ -2,16 +2,16 @@ import { getAllJobs } from "./firebase-config.js";
 
 let jobs = [];
 
-function getSaved() {
-  try { return JSON.parse(localStorage.getItem("savedJobs") || "[]"); }
+function getList(key) {
+  try { return JSON.parse(localStorage.getItem(key) || "[]"); }
   catch (e) { return []; }
 }
 
-function toggleSaved(id) {
-  const saved = getSaved();
-  const i = saved.indexOf(String(id));
-  if (i === -1) saved.push(String(id)); else saved.splice(i, 1);
-  try { localStorage.setItem("savedJobs", JSON.stringify(saved)); } catch (e) {}
+function toggleInList(key, id) {
+  const list = getList(key);
+  const i = list.indexOf(String(id));
+  if (i === -1) list.push(String(id)); else list.splice(i, 1);
+  try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {}
   return i === -1;
 }
 
@@ -26,6 +26,9 @@ function timeAgo(ts) {
 const bookmarkSvg =
   "<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z'/></svg>";
 
+const thumbSvg =
+  "<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'/></svg>";
+
 function showJobs(list) {
   const box = document.getElementById("jobs-list");
   box.innerHTML = "";
@@ -35,18 +38,20 @@ function showJobs(list) {
     return;
   }
 
-  const saved = getSaved();
+  const saved = getList("savedJobs");
+  const liked = getList("likedJobs");
 
   list.forEach(function (job) {
     const card = document.createElement("div");
     card.className = "job-card";
     const posted = timeAgo(job.createdAt);
     const isSaved = saved.indexOf(String(job.id)) !== -1;
+    const isLiked = liked.indexOf(String(job.id)) !== -1;
 
     card.innerHTML =
       "<button class='save-btn" + (isSaved ? " saved" : "") + "' title='Save job' aria-label='Save job'>" + bookmarkSvg + "</button>" +
       "<div class='job-top'>" +
-        "<div class='avatar'>" + (job.company || "?").charAt(0).toUpperCase() + "</div>" +
+        "<button class='like-btn" + (isLiked ? " liked" : "") + "' title='Like job' aria-label='Like job'>" + thumbSvg + "</button>" +
         "<div class='job-heading'>" +
           "<span class='apply-badge'>Open for applications</span>" +
           "<h3>" + job.title + "</h3>" +
@@ -62,8 +67,13 @@ function showJobs(list) {
       "<a href='jobs.html?id=" + job.id + "' class='btn btn-primary view-btn'>View Details &amp; Apply</a>";
 
     card.querySelector(".save-btn").addEventListener("click", function (e) {
-      const nowSaved = toggleSaved(job.id);
-      e.currentTarget.classList.toggle("saved", nowSaved);
+      const now = toggleInList("savedJobs", job.id);
+      e.currentTarget.classList.toggle("saved", now);
+    });
+
+    card.querySelector(".like-btn").addEventListener("click", function (e) {
+      const now = toggleInList("likedJobs", job.id);
+      e.currentTarget.classList.toggle("liked", now);
     });
 
     box.appendChild(card);
@@ -84,7 +94,6 @@ function updateStats() {
   });
 }
 
-// Search dabane par seedha Find Jobs page par bhejo
 function goSearch() {
   const q = document.getElementById("search-input").value.trim();
   const city = document.getElementById("city-input").value.trim();
@@ -105,7 +114,6 @@ document.getElementById("search-btn").addEventListener("click", goSearch);
   });
 });
 
-// Category par click karne se us category ki jobs Find Jobs page par khulein
 document.querySelectorAll(".cat-card").forEach(function (card) {
   card.addEventListener("click", function () {
     window.location.href = "jobs.html?category=" + encodeURIComponent(card.dataset.category);
