@@ -378,3 +378,63 @@ body {
 }
 
 .hero-icons { display: none; }
+/* Consistent job cards */
+.jobs-grid { align-items: stretch; }
+
+.job-card {
+  height: 100%;
+  min-height: 330px;
+}
+
+.job-heading { min-width: 0; }
+
+.job-heading h3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.job-heading .job-company {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.job-card .job-meta {
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+.job-card .tag {
+  white-space: nowrap;
+  max-width: 130px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+
+.job-card .job-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 72px;
+  margin-bottom: 14px;
+  word-break: break-word;
+}
+
+.job-footer { margin-top: auto; }
+
+.job-salary {
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.job-footer .posted-on { margin-bottom: 12px; }
+.job-footer .btn { display: block; text-align: center; }
