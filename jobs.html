@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Jobs - CareerHub</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo">Career<span>Hub</span></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="jobs.html">Find Jobs</a>
+        <a href="post-job.html">Post a Job</a>
+        <a href="login.html" class="btn btn-outline">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="fj-bar">
+    <div class="container">
+      <h1>Find Jobs</h1>
+      <div class="fj-filters">
+        <input type="text" id="f-keyword" placeholder="Job title, keyword or company">
+        <input type="text" id="f-city" placeholder="Location">
+        <select id="f-type">
+          <option value="">All job types</option>
+          <option value="Full-time">Full-time</option>
+          <option value="Part-time">Part-time</option>
+          <option value="Internship">Internship</option>
+          <option value="Contract">Contract</option>
+        </select>
+        <select id="f-category">
+          <option value="">All categories</option>
+          <option value="IT">IT</option>
+          <option value="Design">Design</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Finance">Finance</option>
+          <option value="Sales">Sales</option>
+          <option value="Other">Other</option>
+        </select>
+        <button id="f-clear" class="btn btn-outline" type="button">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <main class="container fj-wrap">
+    <aside class="fj-list-col">
+      <p id="fj-count" class="fj-count">Loading jobs...</p>
+      <div id="fj-list" class="fj-list"></div>
+    </aside>
+
+    <section id="fj-detail" class="fj-detail">
+      <p class="muted" style="padding:30px;">Select a job to see the details.</p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">&copy; 2026 CareerHub. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="nav.js"></script>
+  <script type="module" src="jobs.js"></script>
+</body>
+</html>
