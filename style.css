@@ -577,3 +577,21 @@ body {
 @media (max-width: 800px) {
   .search-field + .search-field { border-left: none; border-top: 1px solid var(--border); border-radius: 0; }
 }
+/* Like button (replaces the letter icon) */
+.like-btn {
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all .2s;
+}
+.like-btn:hover { color: var(--primary); border-color: var(--primary); }
+.like-btn.liked { color: #fff; background: var(--primary); border-color: var(--primary); }
+.like-btn.liked svg { fill: currentColor; }
