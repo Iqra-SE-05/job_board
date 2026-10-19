@@ -531,3 +531,15 @@ body {
   .cat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .cat-card img { height: 90px; }
 }
+/* Extra compact stats and footer */
+.stats { padding: 18px 0; }
+.stats-grid { gap: 12px; }
+.stat-num { font-size: 26px; line-height: 1.1; }
+.stat-label { font-size: 13px; }
+
+.footer { padding: 16px 0 10px; }
+.footer-grid { margin-bottom: 8px; gap: 10px; }
+.footer a { margin-bottom: 2px; font-size: 13px; line-height: 1.4; }
+.footer p { font-size: 13px; }
+.footer .logo { font-size: 20px; }
+.footer-bottom { padding-top: 8px; font-size: 12px; }
