@@ -2,14 +2,38 @@ import { getAllJobs } from "./firebase-config.js";
 
 let jobs = [];
 
-function showJobs(jobsToShow) {
-  const list = document.getElementById("jobs-list");
-  list.innerHTML = "";
+function showJobs(list) {
+  const box = document.getElementById("jobs-list");
+  box.innerHTML = "";
 
-  if (jobsToShow.length === 0) {
-    list.innerHTML = "<p class='muted'>No jobs found. Try a different keyword or city.</p>";
+  if (list.length === 0) {
+    box.innerHTML = "<p class='muted'>No jobs found. Try a different keyword, location or job type.</p>";
     return;
   }
+
+  list.forEach(function (job) {
+    const card = document.createElement("div");
+    card.className = "job-card";
+    const posted = timeAgo(job.createdAt);
+    card.innerHTML =
+      "<div class='job-top'>" +
+        "<div class='avatar'>" + (job.company || "?").charAt(0).toUpperCase() + "</div>" +
+        "<div class='job-heading'><h3>" + job.title + "</h3><p class='job-company'>" + job.company + "</p></div>" +
+      "</div>" +
+      "<div class='job-meta'>" +
+        "<span class='tag'>📍 " + job.location + "</span>" +
+        "<span class='tag'>" + job.type + "</span>" +
+        "<span class='tag'>" + job.category + "</span>" +
+      "</div>" +
+      "<p class='job-desc'>" + job.description + "</p>" +
+      "<div class='job-footer'>" +
+        "<p class='job-salary'>" + job.salary + "</p>" +
+        (posted ? "<p class='posted-on'>" + posted + "</p>" : "") +
+        "<a href='job.html?id=" + job.id + "' class='btn btn-primary'>View Details &amp; Apply</a>" +
+      "</div>";
+    box.appendChild(card);
+  });
+}
 
   jobsToShow.forEach(function (job) {
     const card = document.createElement("div");
