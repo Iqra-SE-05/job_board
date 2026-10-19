@@ -1,9 +1,7 @@
 import { getAllJobs } from "./firebase-config.js";
 
 let jobs = [];
-let activeCategory = "";
 
-// Saved jobs is browser mein save hoti hain (har user ke apne device par)
 function getSaved() {
   try { return JSON.parse(localStorage.getItem("savedJobs") || "[]"); }
   catch (e) { return []; }
@@ -33,7 +31,7 @@ function showJobs(list) {
   box.innerHTML = "";
 
   if (list.length === 0) {
-    box.innerHTML = "<p class='muted'>No jobs found. Try a different keyword, location or job type.</p>";
+    box.innerHTML = "<p class='muted'>No jobs available yet.</p>";
     return;
   }
 
@@ -61,7 +59,7 @@ function showJobs(list) {
         "<span class='pill pill-type'>" + job.type + "</span>" +
         "<span class='pill pill-cat'>" + job.category + "</span>" +
       "</div>" +
-      "<a href='job.html?id=" + job.id + "' class='btn btn-primary view-btn'>View Details &amp; Apply</a>";
+      "<a href='jobs.html?id=" + job.id + "' class='btn btn-primary view-btn'>View Details &amp; Apply</a>";
 
     card.querySelector(".save-btn").addEventListener("click", function (e) {
       const nowSaved = toggleSaved(job.id);
@@ -72,44 +70,9 @@ function showJobs(list) {
   });
 }
 
-function applyFilters() {
-  const keyword = document.getElementById("search-input").value.toLowerCase().trim();
-  const city = document.getElementById("city-input").value.toLowerCase().trim();
-  const type = document.getElementById("type-input").value;
-
-  const filtered = jobs.filter(function (job) {
-    const matchesKeyword =
-      job.title.toLowerCase().includes(keyword) ||
-      job.company.toLowerCase().includes(keyword) ||
-      job.category.toLowerCase().includes(keyword) ||
-      job.description.toLowerCase().includes(keyword);
-    const matchesCity = job.location.toLowerCase().includes(city);
-    const matchesType = !type || job.type === type;
-    const matchesCategory = !activeCategory || job.category === activeCategory;
-    return matchesKeyword && matchesCity && matchesType && matchesCategory;
-  });
-
-  document.getElementById("jobs-count").textContent = filtered.length + " job(s) found";
-
-  const chip = document.getElementById("filter-chip");
-  if (activeCategory) {
-    chip.style.display = "inline-block";
-    chip.textContent = "Category: " + activeCategory + "  ✕";
-  } else {
-    chip.style.display = "none";
-  }
-
-  showJobs(filtered);
-}
-
-function searchAndScroll() {
-  applyFilters();
-  document.getElementById("jobs").scrollIntoView({ behavior: "smooth" });
-}
-
 function updateStats() {
-  const companies = new Set(jobs.map(function (j) { return j.company.toLowerCase(); }));
-  const cities = new Set(jobs.map(function (j) { return j.location.toLowerCase(); }));
+  const companies = new Set(jobs.map(function (j) { return String(j.company).toLowerCase(); }));
+  const cities = new Set(jobs.map(function (j) { return String(j.location).toLowerCase(); }));
   document.getElementById("stat-jobs").textContent = jobs.length;
   document.getElementById("stat-companies").textContent = companies.size;
   document.getElementById("stat-cities").textContent = cities.size;
@@ -121,32 +84,51 @@ function updateStats() {
   });
 }
 
-document.getElementById("search-btn").addEventListener("click", searchAndScroll);
+// Search dabane par seedha Find Jobs page par bhejo
+function goSearch() {
+  const q = document.getElementById("search-input").value.trim();
+  const city = document.getElementById("city-input").value.trim();
+  const type = document.getElementById("type-input").value;
+
+  const p = new URLSearchParams();
+  if (q) p.set("q", q);
+  if (city) p.set("city", city);
+  if (type) p.set("type", type);
+
+  window.location.href = "jobs.html" + (p.toString() ? "?" + p.toString() : "");
+}
+
+document.getElementById("search-btn").addEventListener("click", goSearch);
 ["search-input", "city-input"].forEach(function (id) {
   document.getElementById(id).addEventListener("keyup", function (e) {
-    if (e.key === "Enter") searchAndScroll();
+    if (e.key === "Enter") goSearch();
   });
 });
-document.getElementById("type-input").addEventListener("change", applyFilters);
 
+// Category par click karne se us category ki jobs Find Jobs page par khulein
 document.querySelectorAll(".cat-card").forEach(function (card) {
   card.addEventListener("click", function () {
-    activeCategory = card.dataset.category;
-    applyFilters();
-    document.getElementById("jobs").scrollIntoView({ behavior: "smooth" });
+    window.location.href = "jobs.html?category=" + encodeURIComponent(card.dataset.category);
   });
-});
-
-document.getElementById("filter-chip").addEventListener("click", function () {
-  activeCategory = "";
-  applyFilters();
 });
 
 async function init() {
   document.getElementById("jobs-list").innerHTML = "<p class='muted'>Loading jobs...</p>";
   jobs = await getAllJobs();
+  jobs.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
   updateStats();
-  applyFilters();
+
+  document.getElementById("jobs-count").textContent = "Browse the newest openings from top companies.";
+  showJobs(jobs.slice(0, 6));
+
+  if (jobs.length > 6) {
+    const more = document.createElement("a");
+    more.href = "jobs.html";
+    more.className = "btn btn-outline";
+    more.style.cssText = "display:block;width:max-content;margin:28px auto 0;";
+    more.textContent = "View all " + jobs.length + " jobs";
+    document.getElementById("jobs").appendChild(more);
+  }
 }
 
 init();
