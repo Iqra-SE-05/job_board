@@ -3,6 +3,7 @@ import { getAllJobs } from "./firebase-config.js";
 let jobs = [];
 let filtered = [];
 let selectedId = null;
+let cameFromSearch = false;
 
 const listEl = document.getElementById("fj-list");
 const detailEl = document.getElementById("fj-detail");
@@ -27,6 +28,21 @@ function timeAgo(ts) {
   if (days <= 0) return "Today";
   if (days === 1) return "1 day ago";
   return days + " days ago";
+}
+
+// Text ko saaf karo: chhote harf, symbols ki jagah space
+function norm(s) {
+  return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+}
+
+// Har lafz kisi bhi field (title, company, city, type, category, description) mein mil jaye
+function matchesKeyword(job, query) {
+  const words = norm(query).split(" ").filter(Boolean);
+  if (words.length === 0) return true;
+  const hay = norm(
+    [job.title, job.company, job.category, job.location, job.type, job.description].join(" ")
+  );
+  return words.every(function (w) { return hay.includes(w); });
 }
 
 function renderList() {
@@ -102,7 +118,7 @@ function renderDetail(job, openOnMobile) {
 
   detailEl.querySelector("#fj-share").addEventListener("click", function (e) {
     const btn = e.currentTarget;
-    const link = location.origin + location.pathname.replace("jobs.html", "") + "job.html?id=" + job.id;
+    const link = location.origin + location.pathname.replace("jobs.html", "") + "jobs.html?id=" + job.id;
     if (navigator.clipboard) {
       navigator.clipboard.writeText(link).then(function () {
         btn.textContent = "Link copied";
@@ -120,17 +136,14 @@ function renderDetail(job, openOnMobile) {
 }
 
 function applyFilters(keepSelection) {
-  const kw = document.getElementById("f-keyword").value.toLowerCase().trim();
-  const city = document.getElementById("f-city").value.toLowerCase().trim();
+  const kw = document.getElementById("f-keyword").value;
+  const city = norm(document.getElementById("f-city").value);
   const type = document.getElementById("f-type").value;
   const cat = document.getElementById("f-category").value;
 
   filtered = jobs.filter(function (job) {
-    const okKw =
-      job.title.toLowerCase().includes(kw) ||
-      job.company.toLowerCase().includes(kw) ||
-      job.description.toLowerCase().includes(kw);
-    const okCity = job.location.toLowerCase().includes(city);
+    const okKw = matchesKeyword(job, kw);
+    const okCity = !city || norm(job.location).includes(city);
     const okType = !type || job.type === type;
     const okCat = !cat || job.category === cat;
     return okKw && okCity && okType && okCat;
@@ -144,7 +157,9 @@ function applyFilters(keepSelection) {
   renderList();
   if (filtered.length > 0) {
     const current = filtered.find(function (j) { return String(j.id) === String(selectedId); });
-    renderDetail(current, false);
+    // Search se aaye hon aur sirf ek job mile to mobile par seedha usi job ki detail khul jaye
+    renderDetail(current, cameFromSearch && filtered.length === 1 && window.innerWidth <= 900);
+    cameFromSearch = false;
   }
 }
 
@@ -166,14 +181,19 @@ async function init() {
   jobs = await getAllJobs();
   jobs.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
 
-  // Home page se aane wale filters (jobs.html?category=IT waghera)
+  // Home page se aane wale search / category / job id
   const p = new URLSearchParams(location.search);
   if (p.get("q")) document.getElementById("f-keyword").value = p.get("q");
   if (p.get("city")) document.getElementById("f-city").value = p.get("city");
   if (p.get("type")) document.getElementById("f-type").value = p.get("type");
   if (p.get("category")) document.getElementById("f-category").value = p.get("category");
 
-  applyFilters(false);
+  cameFromSearch = !!(p.get("q") || p.get("city") || p.get("type") || p.get("category"));
+
+  // jobs.html?id=... se aaye to wohi job select ho
+  if (p.get("id")) selectedId = p.get("id");
+
+  applyFilters(!!p.get("id"));
 }
 
 init();
