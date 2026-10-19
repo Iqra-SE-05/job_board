@@ -543,3 +543,37 @@ body {
 .footer p { font-size: 13px; }
 .footer .logo { font-size: 20px; }
 .footer-bottom { padding-top: 8px; font-size: 12px; }
+/* Search box icons */
+.search-field {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 12px;
+  border-radius: 10px;
+}
+.search-field:focus-within { background: #f1f5f9; }
+.search-field + .search-field { border-left: 1px solid var(--border); }
+
+.field-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  color: var(--primary);
+}
+
+.search-field input,
+.search-field select {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  padding: 13px 0;
+  background: transparent;
+}
+.search-field input:focus,
+.search-field select:focus { background: transparent; }
+
+@media (max-width: 800px) {
+  .search-field + .search-field { border-left: none; border-top: 1px solid var(--border); border-radius: 0; }
+}
