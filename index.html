@@ -26,16 +26,28 @@
       <h1>Find Your Next Career Opportunity</h1>
       <p>Discover jobs and internships from growing companies. Search, apply in minutes and get hired.</p>
 
-      <div class="search-box">
-        <input type="text" id="search-input" placeholder="Job title or keyword">
-        <input type="text" id="city-input" placeholder="Location">
-        <select id="type-input">
-          <option value="">All job types</option>
-          <option value="Full-time">Full-time</option>
-          <option value="Part-time">Part-time</option>
-          <option value="Internship">Internship</option>
-          <option value="Contract">Contract</option>
-        </select>
+            <div class="search-box">
+        <div class="search-field">
+          <svg class="field-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="search-input" placeholder="Job title or keyword">
+        </div>
+
+        <div class="search-field">
+          <svg class="field-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <input type="text" id="city-input" placeholder="Location">
+        </div>
+
+        <div class="search-field">
+          <svg class="field-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          <select id="type-input">
+            <option value="">All job types</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Internship">Internship</option>
+            <option value="Contract">Contract</option>
+          </select>
+        </div>
+
         <button id="search-btn" class="btn btn-primary">Search Jobs</button>
       </div>
     </div>
