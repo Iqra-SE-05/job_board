@@ -717,3 +717,22 @@ body {
   }
   .fj-head, .fj-actions, .fj-body { padding-left: 20px; padding-right: 20px; }
 }
+/* Tighter stats and footer */
+.stats { padding: 32px 0; }
+.stat-num { font-size: 34px; line-height: 1.2; }
+.stat-label { font-size: 14px; }
+
+.footer {
+  margin-top: 0;
+  padding: 28px 0 16px;
+  border-top: 1px solid #1e293b;
+}
+.footer-grid { margin-bottom: 14px; gap: 16px; }
+.footer a { margin-bottom: 4px; font-size: 14px; }
+.footer p { font-size: 14px; }
+.footer-bottom { padding-top: 12px; font-size: 13px; }
+
+@media (max-width: 800px) {
+  .stats { padding: 24px 0; }
+  .stats-grid { gap: 16px; }
+}
