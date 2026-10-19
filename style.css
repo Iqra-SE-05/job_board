@@ -366,3 +366,15 @@ body {
   .search-field { padding: 0 14px; }
   .search-submit { width: 100%; }
 }
+
+/* Hero with photo background */
+.hero {
+  background:
+    linear-gradient(135deg, rgba(15, 23, 42, 0.78), rgba(30, 58, 138, 0.60)),
+    url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1600&q=70');
+  background-size: cover;
+  background-position: center;
+  background-color: #1e3a8a;
+}
+
+.hero-icons { display: none; }
