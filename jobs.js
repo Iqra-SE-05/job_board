@@ -9,16 +9,16 @@ const listEl = document.getElementById("fj-list");
 const detailEl = document.getElementById("fj-detail");
 const countEl = document.getElementById("fj-count");
 
-function getSaved() {
-  try { return JSON.parse(localStorage.getItem("savedJobs") || "[]"); }
+function getList(key) {
+  try { return JSON.parse(localStorage.getItem(key) || "[]"); }
   catch (e) { return []; }
 }
 
-function toggleSaved(id) {
-  const saved = getSaved();
-  const i = saved.indexOf(String(id));
-  if (i === -1) saved.push(String(id)); else saved.splice(i, 1);
-  try { localStorage.setItem("savedJobs", JSON.stringify(saved)); } catch (e) {}
+function toggleInList(key, id) {
+  const list = getList(key);
+  const i = list.indexOf(String(id));
+  if (i === -1) list.push(String(id)); else list.splice(i, 1);
+  try { localStorage.setItem(key, JSON.stringify(list)); } catch (e) {}
   return i === -1;
 }
 
@@ -30,12 +30,13 @@ function timeAgo(ts) {
   return days + " days ago";
 }
 
-// Text ko saaf karo: chhote harf, symbols ki jagah space
+const thumbSvg =
+  "<svg viewBox='0 0 24 24' width='20' height='20' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3'/></svg>";
+
 function norm(s) {
   return String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 }
 
-// Har lafz kisi bhi field (title, company, city, type, category, description) mein mil jaye
 function matchesKeyword(job, query) {
   const words = norm(query).split(" ").filter(Boolean);
   if (words.length === 0) return true;
@@ -55,11 +56,14 @@ function renderList() {
     return;
   }
 
+  const liked = getList("likedJobs");
+
   filtered.forEach(function (job) {
+    const isLiked = liked.indexOf(String(job.id)) !== -1;
     const item = document.createElement("div");
     item.className = "fj-item" + (String(job.id) === String(selectedId) ? " active" : "");
     item.innerHTML =
-      "<div class='avatar'>" + (job.company || "?").charAt(0).toUpperCase() + "</div>" +
+      "<button class='like-btn" + (isLiked ? " liked" : "") + "' type='button' title='Like job' aria-label='Like job'>" + thumbSvg + "</button>" +
       "<div class='fj-item-body'>" +
         "<h3>" + job.title + "</h3>" +
         "<p class='fj-item-co'>" + job.company + "</p>" +
@@ -69,6 +73,13 @@ function renderList() {
           "<span class='pill pill-type'>" + job.type + "</span>" +
         "</div>" +
       "</div>";
+
+    item.querySelector(".like-btn").addEventListener("click", function (e) {
+      e.stopPropagation();
+      const now = toggleInList("likedJobs", job.id);
+      e.currentTarget.classList.toggle("liked", now);
+    });
+
     item.addEventListener("click", function () {
       selectedId = job.id;
       renderList();
@@ -79,7 +90,7 @@ function renderList() {
 }
 
 function renderDetail(job, openOnMobile) {
-  const isSaved = getSaved().indexOf(String(job.id)) !== -1;
+  const isSaved = getList("savedJobs").indexOf(String(job.id)) !== -1;
   const reqs = (job.requirements || [])
     .map(function (r) { return "<li>" + r + "</li>"; })
     .join("");
@@ -113,7 +124,7 @@ function renderDetail(job, openOnMobile) {
     "</div>";
 
   detailEl.querySelector("#fj-save").addEventListener("click", function (e) {
-    e.currentTarget.textContent = toggleSaved(job.id) ? "Saved" : "Save";
+    e.currentTarget.textContent = toggleInList("savedJobs", job.id) ? "Saved" : "Save";
   });
 
   detailEl.querySelector("#fj-share").addEventListener("click", function (e) {
@@ -157,7 +168,6 @@ function applyFilters(keepSelection) {
   renderList();
   if (filtered.length > 0) {
     const current = filtered.find(function (j) { return String(j.id) === String(selectedId); });
-    // Search se aaye hon aur sirf ek job mile to mobile par seedha usi job ki detail khul jaye
     renderDetail(current, cameFromSearch && filtered.length === 1 && window.innerWidth <= 900);
     cameFromSearch = false;
   }
@@ -181,7 +191,6 @@ async function init() {
   jobs = await getAllJobs();
   jobs.sort(function (a, b) { return (b.createdAt || 0) - (a.createdAt || 0); });
 
-  // Home page se aane wale search / category / job id
   const p = new URLSearchParams(location.search);
   if (p.get("q")) document.getElementById("f-keyword").value = p.get("q");
   if (p.get("city")) document.getElementById("f-city").value = p.get("city");
@@ -189,8 +198,6 @@ async function init() {
   if (p.get("category")) document.getElementById("f-category").value = p.get("category");
 
   cameFromSearch = !!(p.get("q") || p.get("city") || p.get("type") || p.get("category"));
-
-  // jobs.html?id=... se aaye to wohi job select ho
   if (p.get("id")) selectedId = p.get("id");
 
   applyFilters(!!p.get("id"));
