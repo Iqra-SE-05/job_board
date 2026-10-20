@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 64" width="250" height="64">
+  <circle cx="26" cy="26" r="17" fill="none" stroke="#1b1b1b" stroke-width="5"/>
+  <line x1="38" y1="38" x2="52" y2="54" stroke="#1b1b1b" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="26" cy="19" r="5.5" fill="#1a73c8"/>
+  <path d="M16 35 Q16 27 26 27 Q36 27 36 35 Z" fill="#1a73c8"/>
+  <text x="64" y="42" font-family="Arial, Helvetica, sans-serif" font-weight="800" font-size="34" fill="#0f172a">Job<tspan fill="#1a73c8">Board</tspan></text>
+</svg>
