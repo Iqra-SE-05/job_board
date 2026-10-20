@@ -22,6 +22,10 @@ function toggleInList(key, id) {
   return i === -1;
 }
 
+function isLiked(id) {
+  return getList("likedJobs").indexOf(String(id)) !== -1;
+}
+
 function timeAgo(ts) {
   if (!ts) return "Recently";
   const days = Math.floor((Date.now() - ts) / 86400000);
@@ -56,14 +60,11 @@ function renderList() {
     return;
   }
 
-  const liked = getList("likedJobs");
-
   filtered.forEach(function (job) {
-    const isLiked = liked.indexOf(String(job.id)) !== -1;
     const item = document.createElement("div");
     item.className = "fj-item" + (String(job.id) === String(selectedId) ? " active" : "");
     item.innerHTML =
-      "<button class='like-btn" + (isLiked ? " liked" : "") + "' type='button' title='Like job' aria-label='Like job'>" + thumbSvg + "</button>" +
+      "<button class='like-btn" + (isLiked(job.id) ? " liked" : "") + "' type='button' title='Like job' aria-label='Like job'>" + thumbSvg + "</button>" +
       "<div class='fj-item-body'>" +
         "<h3>" + job.title + "</h3>" +
         "<p class='fj-item-co'>" + job.company + "</p>" +
@@ -78,6 +79,11 @@ function renderList() {
       e.stopPropagation();
       const now = toggleInList("likedJobs", job.id);
       e.currentTarget.classList.toggle("liked", now);
+      // Agar yehi job right side mein khuli hai to wahan ka button bhi update karo
+      if (String(job.id) === String(selectedId)) {
+        const d = detailEl.querySelector(".like-btn");
+        if (d) d.classList.toggle("liked", now);
+      }
     });
 
     item.addEventListener("click", function () {
@@ -98,7 +104,7 @@ function renderDetail(job, openOnMobile) {
   detailEl.innerHTML =
     "<button class='fj-back' type='button'>&larr; Back to jobs</button>" +
     "<div class='fj-head'>" +
-      "<div class='avatar avatar-lg'>" + (job.company || "?").charAt(0).toUpperCase() + "</div>" +
+      "<button class='like-btn" + (isLiked(job.id) ? " liked" : "") + "' type='button' title='Like job' aria-label='Like job'>" + thumbSvg + "</button>" +
       "<div>" +
         "<h2>" + job.title + "</h2>" +
         "<p class='fj-head-co'>" + job.company + " &middot; " + job.location + "</p>" +
@@ -122,6 +128,14 @@ function renderDetail(job, openOnMobile) {
       (reqs ? "<h3>Requirements</h3><ul class='req-list'>" + reqs + "</ul>" : "") +
       "<a class='btn btn-primary fj-apply-bottom' href='job.html?id=" + job.id + "'>Apply for this job</a>" +
     "</div>";
+
+  detailEl.querySelector(".fj-head .like-btn").addEventListener("click", function (e) {
+    const now = toggleInList("likedJobs", job.id);
+    e.currentTarget.classList.toggle("liked", now);
+    // List ka button bhi sync karo
+    const active = listEl.querySelector(".fj-item.active .like-btn");
+    if (active) active.classList.toggle("liked", now);
+  });
 
   detailEl.querySelector("#fj-save").addEventListener("click", function (e) {
     e.currentTarget.textContent = toggleInList("savedJobs", job.id) ? "Saved" : "Save";
