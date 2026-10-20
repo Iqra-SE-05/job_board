@@ -606,3 +606,6 @@ body {
 @media (max-width: 800px) {
   .logo img { height: 36px; }
 }
+/* Like button inside job detail header */
+.fj-head .like-btn { align-self: center; flex: 0 0 auto; height: 40px; padding: 0 16px 0 12px; font-size: 14px; background: #fff; }
+.fj-head .like-btn.liked { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
