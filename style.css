@@ -595,11 +595,11 @@ body {
 .like-btn:hover { color: var(--primary); border-color: var(--primary); }
 .like-btn.liked { color: #fff; background: var(--primary); border-color: var(--primary); }
 .like-btn.liked svg { fill: currentColor; }
-/* Stylish logo */
+/* Logo: magnifier with person */
 .logo {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   font-size: 26px;
   font-weight: 800;
   letter-spacing: -0.8px;
@@ -607,42 +607,25 @@ body {
   text-decoration: none;
 }
 
-/* Icon: gradient rounded square with a briefcase */
 .logo::before {
   content: "";
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
-  border-radius: 10px;
-  background:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='7' width='20' height='14' rx='2'/%3E%3Cpath d='M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16'/%3E%3C/svg%3E")
-      center / 20px 20px no-repeat,
-    linear-gradient(135deg, var(--primary), var(--secondary));
-  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.35);
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='26' cy='26' r='16' fill='none' stroke='%230f172a' stroke-width='5'/%3E%3Cline x1='38' y1='38' x2='56' y2='56' stroke='%230f172a' stroke-width='7' stroke-linecap='round'/%3E%3Ccircle cx='26' cy='20' r='5.5' fill='%232563eb'/%3E%3Cpath d='M17 34 Q17 27 26 27 Q35 27 35 34 Z' fill='%232563eb'/%3E%3C/svg%3E") center / contain no-repeat;
   transition: transform .3s;
 }
 
 .logo:hover::before { transform: rotate(-8deg) scale(1.06); }
 
-/* "Board" in gradient text */
-.logo span {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
+.logo span { color: var(--primary); }
 
-/* Footer logo stays readable on dark background */
+/* Footer: white icon on dark background */
 .footer .logo { color: #fff; }
-.footer .logo span {
-  background: linear-gradient(135deg, #60a5fa, #c4b5fd);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.footer .logo::before { box-shadow: none; }
+.footer .logo span { color: #93c5fd; }
+.footer .logo::before { filter: brightness(0) invert(1); }
 
 @media (max-width: 800px) {
   .logo { font-size: 22px; }
-  .logo::before { width: 30px; height: 30px; flex-basis: 30px; background-size: 17px 17px, auto; }
+  .logo::before { width: 34px; height: 34px; flex-basis: 34px; }
 }
