@@ -606,6 +606,25 @@ body {
 @media (max-width: 800px) {
   .logo img { height: 36px; }
 }
-/* Like button inside job detail header */
-.fj-head .like-btn { align-self: center; flex: 0 0 auto; height: 40px; padding: 0 16px 0 12px; font-size: 14px; background: #fff; }
+/* Job detail header: title on the left, Like button on the right */
+.fj-head {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.fj-head > div { flex: 1; min-width: 0; text-align: left; }
+
+.fj-head .like-btn {
+  flex: 0 0 auto;
+  width: auto;
+  height: 40px;
+  padding: 0 16px 0 12px;
+  font-size: 14px;
+  background: #fff;
+}
+
+.fj-head .like-btn svg { width: 17px; height: 17px; }
 .fj-head .like-btn.liked { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
