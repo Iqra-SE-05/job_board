@@ -628,3 +628,19 @@ body {
 
 .fj-head .like-btn svg { width: 17px; height: 17px; }
 .fj-head .like-btn.liked { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+/* Find Jobs list cards: text on the left, Like button on the right */
+.fj-item {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.fj-item .fj-item-body { flex: 1; min-width: 0; text-align: left; }
+
+.fj-item .like-btn {
+  flex: 0 0 auto;
+  width: auto;
+  height: 34px;
+  padding: 0 14px 0 10px;
+}
