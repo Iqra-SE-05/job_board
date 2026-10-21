@@ -1,20 +1,26 @@
-import { onUser, logout } from "./firebase-config.js";
+import { onUser, logout, getRole } from "./api.js";
 
 const nav = document.querySelector(".nav-links");
 const btn = document.querySelector(".nav-links a.btn-outline");
 
-onUser(function (user) {
+onUser(async function (user) {
   if (!btn || !nav) return;
 
-  const old = document.getElementById("dash-link");
+  const old = document.getElementById("role-link");
   if (old) old.remove();
 
   if (user) {
-    const dash = document.createElement("a");
-    dash.id = "dash-link";
-    dash.href = "dashboard.html";
-    dash.textContent = "Dashboard";
-    nav.insertBefore(dash, btn);
+    const role = await getRole(user);
+    const link = document.createElement("a");
+    link.id = "role-link";
+    if (role === "applicant") {
+      link.href = "my-applications.html";
+      link.textContent = "My Applications";
+    } else {
+      link.href = "dashboard.html";
+      link.textContent = "Dashboard";
+    }
+    nav.insertBefore(link, btn);
 
     btn.textContent = "Logout";
     btn.href = "#";
