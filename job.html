@@ -10,10 +10,10 @@
 
   <header class="navbar">
     <div class="container nav-content">
-     <a href="index.html" class="logo"><img src="logo.svg" alt="JobBoard"></a>
+      <a href="index.html" class="logo"><img src="logo.svg" alt="JobBoard"></a>
       <nav class="nav-links">
         <a href="index.html">Home</a>
-        <a href="index.html#jobs">Jobs</a>
+        <a href="jobs.html">Find Jobs</a>
         <a href="post-job.html">Post a Job</a>
         <a href="login.html" class="btn btn-outline">Login</a>
       </nav>
@@ -21,7 +21,7 @@
   </header>
 
   <main class="container detail-page">
-    <a href="index.html" class="back-link">&larr; Back to all jobs</a>
+    <a href="jobs.html" class="back-link">&larr; Back to all jobs</a>
 
     <div id="job-detail" class="detail-card"></div>
 
@@ -46,6 +46,7 @@
         <label for="message">Cover Letter (optional)</label>
         <textarea id="message" rows="4" placeholder="Why are you a good fit?"></textarea>
 
+        <p class="muted" style="margin-top:16px;font-size:14px;">Your information will only be shared with the hiring company.</p>
         <button type="submit" class="btn btn-primary">Submit Application</button>
       </form>
       <p id="success-msg" class="success-msg" style="display:none;"></p>
@@ -54,7 +55,7 @@
 
   <footer class="footer">
     <div class="container">
-      <p>&copy; 2026 JobBoard. All rights reserved.</p>
+      <div class="footer-bottom">&copy; 2026 JobBoard. All rights reserved.</div>
     </div>
   </footer>
 
