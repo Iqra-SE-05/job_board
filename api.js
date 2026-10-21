@@ -26,7 +26,7 @@ function clearSession() {
 // Listeners who comes from login/logout 
 const listeners = [];
 function notify() {
-  const u = getSavedUser();
+    const u = toUser(getSavedUser());
   listeners.forEach(function (cb) { cb(u); });
 }
 
