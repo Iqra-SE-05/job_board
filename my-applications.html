@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Applications - JobBoard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="index.html" class="logo"><img src="logo.svg" alt="JobBoard"></a>
+      <nav class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="jobs.html">Find Jobs</a>
+        <a href="post-job.html">Post a Job</a>
+        <a href="login.html" class="btn btn-outline">Login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container dash-page ma-page">
+    <h1>My Applications</h1>
+    <p class="muted" id="ma-sub">Loading... (first load can take up to a minute)</p>
+
+    <div class="ma-stats" id="ma-stats"></div>
+
+    <div class="ma-tabs" id="ma-tabs">
+      <button class="ma-tab active" data-tab="applied">Applied</button>
+      <button class="ma-tab" data-tab="saved">Saved Jobs</button>
+      <button class="ma-tab" data-tab="liked">Liked Jobs</button>
+      <button class="ma-tab" data-tab="recommended">Recommended</button>
+    </div>
+
+    <div class="ma-filters" id="ma-filters"></div>
+    <div id="ma-list"></div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">&copy; 2026 JobBoard. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script type="module" src="nav.js"></script>
+  <script type="module" src="my-applications.js"></script>
+</body>
+</html>
