@@ -1,15 +1,28 @@
-import { addJob, onUser } from "./firebase-config.js";
+import { addJob, onUser, getRole } from "./api.js";
 
 let currentUser = null;
 
-function clean(text) {
-  return text.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+const form = document.getElementById("post-form");
+const msg = document.getElementById("post-success");
+
+function showMsg(html, isError) {
+  msg.style.display = "block";
+  msg.innerHTML = html;
+  msg.style.background = isError ? "#fee2e2" : "#dcfce7";
+  msg.style.color = isError ? "#991b1b" : "#166534";
+  msg.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
-// Login nahi hai to login page par bhej do
-onUser(function (user) {
+// Sirf logged-in company job post kar sakti hai
+onUser(async function (user) {
   if (!user) {
     window.location.href = "login.html";
+    return;
+  }
+  const role = await getRole(user);
+  if (role !== "company") {
+    form.style.display = "none";
+    showMsg("Only company accounts can post jobs. Please log in with a company account.", true);
     return;
   }
   currentUser = user;
@@ -19,42 +32,38 @@ onUser(function (user) {
   }
 });
 
-document.getElementById("post-form").addEventListener("submit", async function (e) {
+form.addEventListener("submit", async function (e) {
   e.preventDefault();
   if (!currentUser) return;
 
-  const btn = e.target.querySelector("button");
+  const btn = form.querySelector("button");
   btn.disabled = true;
   btn.textContent = "Posting...";
 
   const requirements = document
     .getElementById("requirements")
     .value.split("\n")
-    .map(function (line) { return clean(line); })
+    .map(function (line) { return line.trim(); })
     .filter(function (line) { return line !== ""; });
 
   const newJob = {
-    title: clean(document.getElementById("title").value),
-    company: clean(document.getElementById("company").value),
-    location: clean(document.getElementById("location").value),
+    title: document.getElementById("title").value.trim(),
+    company: document.getElementById("company").value.trim(),
+    location: document.getElementById("location").value.trim(),
     type: document.getElementById("type").value,
     category: document.getElementById("category").value,
-    salary: clean(document.getElementById("salary").value),
-    description: clean(document.getElementById("description").value),
-    requirements: requirements,
-    ownerId: currentUser.uid,
-    ownerEmail: currentUser.email
+    salary: document.getElementById("salary").value.trim(),
+    description: document.getElementById("description").value.trim(),
+    requirements: requirements
   };
 
   try {
     await addJob(newJob);
-    document.getElementById("post-form").style.display = "none";
-    const msg = document.getElementById("post-success");
-    msg.style.display = "block";
-    msg.innerHTML = "Your job <strong>" + newJob.title + "</strong> has been posted! <a href='index.html#jobs'>View it on the home page</a>";
+    form.style.display = "none";
+    showMsg("Your job <strong>" + newJob.title.replace(/</g, "&lt;") + "</strong> has been posted! <a href='jobs.html'>View it on Find Jobs</a>", false);
   } catch (err) {
     console.error(err);
-    alert("Something went wrong. Please try again.");
+    showMsg(err.message || "Could not post the job. Please try again.", true);
     btn.disabled = false;
     btn.textContent = "Post Job";
   }
