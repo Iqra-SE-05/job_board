@@ -1,5 +1,5 @@
 
-const API_URL = "https://job-board-api-bhi5.onrender.com/";
+const API_URL = "https://job-board-api-bhi5.onrender.com";
 
 function getToken() {
   try { return localStorage.getItem("token"); } catch (e) { return null; }
