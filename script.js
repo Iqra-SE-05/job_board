@@ -1,4 +1,4 @@
-import { getAllJobs } from "./firebase-config.js";
+import { getAllJobs } from "./api.js";
 
 let jobs = [];
 
